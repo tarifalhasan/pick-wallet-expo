@@ -57,13 +57,13 @@ const MainLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="login"
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="login"
+        name="(tabs)"
         options={{
           headerShown: false,
         }}
