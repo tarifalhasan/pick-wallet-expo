@@ -1,37 +1,122 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { PortalHost } from "@/components/primitives/portal";
+import { AuthContextProvider, useAuth } from "@/context/authContext";
+import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
+import { NAV_THEME } from "@/lib/constants";
+import { useColorScheme } from "@/lib/useColorScheme";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Theme, ThemeProvider } from "@react-navigation/native";
+import { SplashScreen, Stack, useRouter, useSegments } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import * as React from "react";
+import { Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const LIGHT_THEME: Theme = {
+  dark: false,
+  colors: NAV_THEME.light,
+};
+const DARK_THEME: Theme = {
+  dark: true,
+  colors: NAV_THEME.dark,
+};
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from "expo-router";
+
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: "(tabs)",
+};
+
+// Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+const MainLayout = () => {
+  const { isAuthenticated } = useAuth();
+  const sengment = useSegments();
+  const router = useRouter();
+  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+  React.useEffect(() => {
+    //  check that the user is authenticated or not
+    if (typeof isAuthenticated === "undefined") return;
+    const isApp = sengment[0] == "(app)";
+
+    if (isAuthenticated && !isApp) {
+      // redirect to home
+      router.replace("/");
+    } else if (!isAuthenticated) {
+      // redirect to login
+      router.replace("/");
     }
-  }, [loaded]);
+  }, [isAuthenticated]);
 
-  if (!loaded) {
+  return (
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack>
+  );
+};
+export default function RootLayout() {
+  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    (async () => {
+      const theme = await AsyncStorage.getItem("theme");
+      if (Platform.OS === "web") {
+        // Adds the background color to the html element to prevent white background on overscroll.
+        document.documentElement.classList.add("bg-background");
+      }
+      if (!theme) {
+        setAndroidNavigationBar(colorScheme);
+        AsyncStorage.setItem("theme", colorScheme);
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      const colorTheme = theme === "dark" ? "dark" : "light";
+      setAndroidNavigationBar(colorTheme);
+      if (colorTheme !== colorScheme) {
+        setColorScheme(colorTheme);
+
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      setIsColorSchemeLoaded(true);
+    })().finally(() => {
+      SplashScreen.hideAsync();
+    });
+  }, []);
+
+  if (!isColorSchemeLoaded) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <MainLayout />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+        <PortalHost />
+      </ThemeProvider>
+    </AuthContextProvider>
   );
 }
