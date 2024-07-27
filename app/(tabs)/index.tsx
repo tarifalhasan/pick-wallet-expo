@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{ paddingTop: hp(8) }}
+      style={{ paddingTop: hp(6) }}
       className="flex-1  bg-white"
     >
       <View

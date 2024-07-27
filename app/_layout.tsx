@@ -63,6 +63,12 @@ const MainLayout = () => {
         }}
       />
       <Stack.Screen
+        name="business/[id]"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="(tabs)"
         options={{
           headerShown: false,
