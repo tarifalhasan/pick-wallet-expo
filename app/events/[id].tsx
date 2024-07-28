@@ -5,6 +5,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -17,18 +18,9 @@ import { RFValue } from "react-native-responsive-fontsize";
 const EventsDetails = () => {
   const { id } = useLocalSearchParams();
   const { hp, wp } = useResponsive();
+
   const router = useRouter();
   const [tab, setTab] = useState<"stamps" | "quests">("stamps");
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
-
-  const [isShareModalVisible, setShareModalVisible] = useState<boolean>(false);
-  const toggleShareModal = () => {
-    setModalVisible(false);
-    setShareModalVisible(!isModalVisible);
-  };
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const StampsData = [
     {
@@ -176,11 +168,15 @@ const EventsDetails = () => {
       <View className="flex-row pb-6 items-center">
         <Pressable onPress={() => setTab("stamps")} className="flex-1">
           <Text
-            style={{ fontSize: RFValue(18) }}
+            style={{
+              fontSize: RFValue(18),
+              borderBottomColor: tab === "stamps" ? "#F15152" : "#fff",
+              borderBottomWidth: 2,
+            }}
             className={cn(
-              "text-center font-bold py-5 border-b-2",
+              "text-center font-bold py-5",
               tab === "stamps"
-                ? "text-skin-red border-skin-red"
+                ? "text-skin-red"
                 : "border-transparent text-skin-black"
             )}
           >
@@ -189,11 +185,15 @@ const EventsDetails = () => {
         </Pressable>
         <Pressable onPress={() => setTab("quests")} className="flex-1">
           <Text
-            style={{ fontSize: RFValue(18) }}
+            style={{
+              fontSize: RFValue(18),
+              borderBottomColor: tab === "quests" ? "#F15152" : "#fff",
+              borderBottomWidth: 2,
+            }}
             className={cn(
-              "text-center font-bold py-5 border-b-2",
+              "text-center font-bold py-5 ",
               tab === "quests"
-                ? "text-skin-red border-skin-red"
+                ? "text-skin-red "
                 : "text-skin-black border-transparent"
             )}
           >
@@ -231,8 +231,8 @@ const EventsDetails = () => {
               style={{
                 paddingHorizontal: wp(4),
                 paddingVertical: hp(2),
-                width: hp(12),
-                height: hp(12),
+                width: Dimensions.get("window").width / 4 - 8,
+                height: Dimensions.get("window").width / 4 - 8,
               }}
             >
               <Image
@@ -276,8 +276,8 @@ const EventsDetails = () => {
               style={{
                 paddingHorizontal: wp(4),
                 paddingVertical: hp(2),
-                width: hp(12),
-                height: hp(12),
+                width: Dimensions.get("window").width / 4 - 8,
+                height: Dimensions.get("window").width / 4 - 8,
               }}
             >
               <Image

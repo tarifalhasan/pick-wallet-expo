@@ -35,8 +35,9 @@ const Events = () => {
       <View
         style={{
           paddingHorizontal: wp(4),
+          paddingTop: hp(2),
         }}
-        className="flex-row py-6 items-center justify-between gap-4"
+        className="flex-row  items-center justify-between gap-4"
       >
         <View className="flex-1 rounded-lg border-2 border-skin-gray px-4  h-14 flex-row items-center gap-2">
           <Search size={20} color={"#3A2E39"} />
@@ -76,8 +77,9 @@ const Events = () => {
       <View
         style={{
           paddingHorizontal: wp(4),
+          paddingVertical: hp(2.5),
         }}
-        className="flex-row pb-5 items-center justify-between"
+        className="flex-row  items-center justify-between"
       >
         <Text
           className=" text-skin-black font-medium"

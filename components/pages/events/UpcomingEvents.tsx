@@ -55,7 +55,11 @@ const UpcomingEvents = () => {
     >
       <View className="flex-row items-center justify-between">
         <Text
-          style={{ fontSize: RFValue(23) }}
+          style={{
+            fontSize: RFValue(23),
+            paddingTop: hp(3),
+            paddingBottom: hp(0.5),
+          }}
           className=" text-skin-black font-medium"
         >
           Upcoming events

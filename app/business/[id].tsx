@@ -8,6 +8,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -193,11 +194,16 @@ const BusinessDetails = () => {
       <View className="flex-row pb-6 items-center">
         <Pressable onPress={() => setTab("stamps")} className="flex-1">
           <Text
-            style={{ fontSize: RFValue(18) }}
+            style={{
+              fontSize: RFValue(18),
+
+              borderBottomColor: tab === "stamps" ? "#F15152" : "#fff",
+              borderBottomWidth: 2,
+            }}
             className={cn(
-              "text-center font-bold py-5 border-b-2",
+              "text-center font-bold py-5",
               tab === "stamps"
-                ? "text-skin-red border-skin-red"
+                ? "text-skin-red "
                 : "border-transparent text-skin-black"
             )}
           >
@@ -206,11 +212,15 @@ const BusinessDetails = () => {
         </Pressable>
         <Pressable onPress={() => setTab("rewards")} className="flex-1">
           <Text
-            style={{ fontSize: RFValue(18) }}
+            style={{
+              fontSize: RFValue(18),
+              borderBottomColor: tab === "rewards" ? "#F15152" : "#fff",
+              borderBottomWidth: 2,
+            }}
             className={cn(
-              "text-center font-bold py-5 border-b-2",
+              "text-center font-bold py-5",
               tab === "rewards"
-                ? "text-skin-red border-skin-red"
+                ? "text-skin-red "
                 : "text-skin-black border-transparent"
             )}
           >
@@ -246,8 +256,8 @@ const BusinessDetails = () => {
               style={{
                 paddingHorizontal: wp(4),
                 paddingVertical: hp(2),
-                width: hp(12),
-                height: hp(12),
+                width: Dimensions.get("window").width / 4 - 8,
+                height: Dimensions.get("window").width / 4 - 8,
               }}
             >
               <Image

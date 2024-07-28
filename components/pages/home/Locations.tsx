@@ -55,13 +55,21 @@ const Locations = () => {
     >
       <View className="flex-row items-center justify-between">
         <Text
-          style={{ fontSize: RFValue(23) }}
+          style={{
+            fontSize: RFValue(23),
+            paddingTop: hp(3.5),
+            paddingBottom: hp(1.5),
+          }}
           className=" text-skin-black font-medium"
         >
           All Locations
         </Text>
       </View>
-      <View className=" gap-6">
+      <View
+        style={{
+          rowGap: hp(3),
+        }}
+      >
         {locationsData.map((location, index) => (
           <TouchableOpacity
             onPress={() => router.push(`/business/${location.slug}`)}
