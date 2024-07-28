@@ -69,6 +69,12 @@ const MainLayout = () => {
         }}
       />
       <Stack.Screen
+        name="events/[id]"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="(tabs)"
         options={{
           headerShown: false,

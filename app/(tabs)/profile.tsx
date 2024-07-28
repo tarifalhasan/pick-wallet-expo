@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useResponsive from "@/hooks/useResponsive";
+import { useRouter } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -7,6 +8,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 
 const Profile = () => {
   const { wp, hp } = useResponsive();
+  const router = useRouter();
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -127,6 +129,7 @@ const Profile = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => router.push("/login")}
           style={{
             paddingHorizontal: wp(4),
             paddingVertical: hp(2),
@@ -138,7 +141,7 @@ const Profile = () => {
             style={{ fontSize: RFValue(20) }}
             className=" text-skin-black font-medium"
           >
-            Help
+            Logout
           </Text>
         </TouchableOpacity>
       </View>
