@@ -1,11 +1,11 @@
 import BusinessDetailsOpenModal from "@/components/pages/business/BusinessDetailsOpenModal";
 import ShareModal from "@/components/pages/business/ShareModal";
+import RewardCard from "@/components/pages/rewards/RewardCard";
 import { REWARDS_DATA } from "@/data";
 import useResponsive from "@/hooks/useResponsive";
 import { cn } from "@/lib/utils";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Check, ShoppingCart } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -13,7 +13,6 @@ import {
   ImageBackground,
   Pressable,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -295,75 +294,11 @@ const BusinessDetails = () => {
                   paddingVertical: hp(1),
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: "rgba(235, 234, 235, 0.60)",
-                    paddingHorizontal: wp(6),
-                    paddingVertical: hp(2),
-                  }}
-                  className=" rounded-xl"
-                >
-                  <View className=" flex-row justify-end">
-                    <Pressable onPress={toggleShareModal}>
-                      <Image
-                        style={{ width: hp(4), height: hp(4) }}
-                        source={require("@/assets/icons/share-arrow.png")}
-                      />
-                    </Pressable>
-                  </View>
-                  <View>
-                    <Text
-                      style={{ fontSize: RFValue(28) }}
-                      className=" font-bold text-skin-black"
-                    >
-                      1 free coffee! ☕
-                    </Text>
-                    {item.status === "claim" ? (
-                      <Text
-                        style={{ fontSize: RFValue(13) }}
-                        className=" font-normal text-skin-light_black"
-                      >
-                        Expires {item.expiresData}
-                      </Text>
-                    ) : (
-                      <Text
-                        style={{ fontSize: RFValue(13) }}
-                        className=" font-normal text-skin-light_black"
-                      >
-                        Valability : {item.valability}
-                      </Text>
-                    )}
-                  </View>
-                  <View className="flex-row justify-end">
-                    {item.status === "claim" ? (
-                      <TouchableOpacity
-                        onPress={toggleModal}
-                        className=" flex-row items-center gap-2"
-                      >
-                        <Text
-                          style={{ fontSize: RFValue(17) }}
-                          className=" font-bold text-skin-red"
-                        >
-                          Claim reward
-                        </Text>
-                        <Check size={25} color={"#F15152"} />
-                      </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        onPress={toggleModal}
-                        className=" flex-row items-center gap-2"
-                      >
-                        <Text
-                          style={{ fontSize: RFValue(17) }}
-                          className=" font-bold text-skin-red"
-                        >
-                          Buy reward
-                        </Text>
-                        <ShoppingCart size={25} color={"#F15152"} />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </View>
+                <RewardCard
+                  toggleShareModal={toggleShareModal}
+                  toggleModal={toggleModal}
+                  item={item}
+                />
               </View>
               <BusinessDetailsOpenModal
                 isModalVisible={isModalVisible}
